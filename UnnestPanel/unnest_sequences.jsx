@@ -300,6 +300,8 @@ A NOTE ON WHY THIS ISN'T "PIXEL PERFECT" AUTOMATION
     // Main
     // ------------------------------------------------------------------
 
+    try {
+
     var seq = app.project.activeSequence;
     if (!seq) {
         alert("Open the sequence you want to un-nest first — and make sure it's a DUPLICATE of your real sequence before running this.");
@@ -370,5 +372,18 @@ A NOTE ON WHY THIS ISN'T "PIXEL PERFECT" AUTOMATION
     if (logPath) doneMsg += "\n\nFull log written to:\n" + logPath;
 
     alert(doneMsg);
+
+    } catch (e) {
+        // Surface the REAL error via a native dialog — evalScript()'s
+        // callback in the panel only ever reports the generic string
+        // "EvalScript error." with no detail, so without this, an
+        // exception here is invisible. Report this text back verbatim.
+        alert(
+            "Un-nest script hit an error:\n\n" +
+            e.toString() +
+            (e.line ? ("\n\nLine: " + e.line) : "") +
+            (e.fileName ? ("\nFile: " + e.fileName) : "")
+        );
+    }
 
 })();
