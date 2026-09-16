@@ -105,6 +105,16 @@ A NOTE ON WHY THIS ISN'T "PIXEL PERFECT" AUTOMATION
     // Small helpers
     // ------------------------------------------------------------------
 
+    // Array.prototype.map isn't available in every ExtendScript build (it's
+    // an older, ES3-era engine in some hosts) — use a plain loop instead.
+    function joinList(arr, fn) {
+        var out = [];
+        for (var i = 0; i < arr.length; i++) {
+            out.push(fn(arr[i]));
+        }
+        return out.join("\n");
+    }
+
     function secondsToTicksString(sec) {
         var t = new Time();
         t.seconds = sec;
@@ -327,7 +337,7 @@ A NOTE ON WHY THIS ISN'T "PIXEL PERFECT" AUTOMATION
         var msg = "No nests were eligible to un-nest automatically.";
         if (scan.skipped.length) {
             msg += "\n\n" + scan.skipped.length + " nest(s) found but skipped:\n" +
-                scan.skipped.map(function (s) { return "- " + s.name + ": " + s.reason; }).join("\n");
+                joinList(scan.skipped, function (s) { return "- " + s.name + ": " + s.reason; });
         } else {
             msg += "\n\nNo nested sequences were found in this sequence at all.";
         }
@@ -336,10 +346,10 @@ A NOTE ON WHY THIS ISN'T "PIXEL PERFECT" AUTOMATION
     }
 
     var confirmMsg = "Found " + scan.candidates.length + " nest(s) eligible to un-nest:\n" +
-        scan.candidates.map(function (c) { return "- " + c.label; }).join("\n");
+        joinList(scan.candidates, function (c) { return "- " + c.label; });
     if (scan.skipped.length) {
         confirmMsg += "\n\n" + scan.skipped.length + " nest(s) will be SKIPPED (left as-is):\n" +
-            scan.skipped.map(function (s) { return "- " + s.name + ": " + s.reason; }).join("\n");
+            joinList(scan.skipped, function (s) { return "- " + s.name + ": " + s.reason; });
     }
     confirmMsg += "\n\nProceed with un-nesting the eligible ones?";
 
