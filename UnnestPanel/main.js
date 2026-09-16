@@ -29,7 +29,7 @@
       "try { $.evalFile(" + JSON.stringify(jsxPath) + "); } " +
       "catch (e) { alert('Could not load/run the script.\\n\\nPath: " +
       jsxPath.replace(/\\/g, "\\\\") +
-      "\\n\\nError: ' + e.toString() + (e.line ? ('\\nLine: ' + e.line) : '')); }";
+      "\\n\\nError: ' + e.toString() + (e.line ? ('\\nLine: ' + e.line) : ''), 'Un-Nest Sequences', true); }";
 
     append("Running " + jsxPath + " ...");
 

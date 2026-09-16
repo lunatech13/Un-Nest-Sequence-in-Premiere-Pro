@@ -304,14 +304,16 @@ A NOTE ON WHY THIS ISN'T "PIXEL PERFECT" AUTOMATION
 
     var seq = app.project.activeSequence;
     if (!seq) {
-        alert("Open the sequence you want to un-nest first — and make sure it's a DUPLICATE of your real sequence before running this.");
+        alert("Open the sequence you want to un-nest first — and make sure it's a DUPLICATE of your real sequence before running this.", "Un-Nest Sequences", false);
         return;
     }
 
     var goAhead = confirm(
         "This will modify the ACTIVE sequence:\n\"" + seq.name + "\"\n\n" +
         "Make sure this is a DUPLICATE (Project panel > right-click the sequence > Duplicate), not your original — this script does not create its own backup.\n\n" +
-        "Continue?"
+        "Continue?",
+        false,
+        "Un-Nest Sequences"
     );
     if (!goAhead) return;
 
@@ -329,7 +331,7 @@ A NOTE ON WHY THIS ISN'T "PIXEL PERFECT" AUTOMATION
         } else {
             msg += "\n\nNo nested sequences were found in this sequence at all.";
         }
-        alert(msg);
+        alert(msg, "Un-Nest Sequences", false);
         return;
     }
 
@@ -341,7 +343,7 @@ A NOTE ON WHY THIS ISN'T "PIXEL PERFECT" AUTOMATION
     }
     confirmMsg += "\n\nProceed with un-nesting the eligible ones?";
 
-    if (!confirm(confirmMsg)) return;
+    if (!confirm(confirmMsg, false, "Un-Nest Sequences")) return;
 
     var succeeded = 0, failed = 0;
     for (var i = 0; i < scan.candidates.length; i++) {
@@ -371,7 +373,7 @@ A NOTE ON WHY THIS ISN'T "PIXEL PERFECT" AUTOMATION
         "\n\nReview the result before replacing your original sequence. If any nests were skipped due to inner nesting, run this script again on the same sequence.";
     if (logPath) doneMsg += "\n\nFull log written to:\n" + logPath;
 
-    alert(doneMsg);
+    alert(doneMsg, "Un-Nest Sequences", false);
 
     } catch (e) {
         // Surface the REAL error via a native dialog — evalScript()'s
@@ -382,7 +384,9 @@ A NOTE ON WHY THIS ISN'T "PIXEL PERFECT" AUTOMATION
             "Un-nest script hit an error:\n\n" +
             e.toString() +
             (e.line ? ("\n\nLine: " + e.line) : "") +
-            (e.fileName ? ("\nFile: " + e.fileName) : "")
+            (e.fileName ? ("\nFile: " + e.fileName) : ""),
+            "Un-Nest Sequences",
+            true
         );
     }
 
