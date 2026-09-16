@@ -1,0 +1,7 @@
+<ExtensionList>
+    <Extension Id="com.paulwise.UnnestPanel.panel">
+       <HostList>
+           <Host Name="PPRO" Port="8088"/>
+        </HostList>
+    </Extension>
+</ExtensionList>
